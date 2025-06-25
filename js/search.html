@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" class="form">
+        <input type="text" class="search-box" placeholder="search">
+        <button type="submit">search</button>
+    </form>
+    <div class="gifContainer"></div>
+    <script>
+       
+
+        const form = document.querySelector('.form')
+        const search_box = document.querySelector('.search-box')
+        const gifContainer = document.querySelector('.gifContainer')
+        form.addEventListener('submit', (e) =>{
+            e.preventDefault()
+            const searchbox_value = search_box.value
+                async function getData() {
+                     try {
+                    const url= await fetch('https://api.giphy.com/v1/gifs/translate?api_key=0ynDxwJiwYHZdDJOaQ2HW6s4OkDaSHAI&s=cats', {mode:"cors"})
+                    const data = await url.json();
+                        console.log(data);
+                        const gifUrl = data.data.images.original.url
+                        gifContainer.innerHTML = `<img src ='${gifUrl}' alt='GIF'>`; 
+                    } catch (error) {
+                        console.error('Error:', error)
+                    }
+                }
+                getData();
+        })
+        
+    </script>
+</body>
+</html>

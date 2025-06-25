@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <!-- Font Awesome CDN -->
+     <link rel="icon" href="weather.png" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="weatherapp.css">
+
+</head>
+<body>
+    <!-- <form action="" class="form">
+        <div class="input-wrapper">   
+        <input type="text"  class="search-box" placeholder="Enter location" >
+        <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <button type="submit">search</button>
+    </form>
+    <div class="city"></div>
+    <div class="temperature"></div> -->
+    <div class="container">
+        <div class="search">
+            <input type="text" placeholder="Enter location" spellcheck="false">
+            <button><img src="searchicon.png" alt=""></button>
+        </div>
+        <div class="error">
+            <p>invalid city name</p>
+        </div>
+        <div class="weather">
+            <img src="/images/rain.png" alt="" class="weather-icon">
+            <h1 class="temp">22&degc</h1>
+            <h2 class="city">Lagos</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="/images/humidity.png" alt="">
+                    <div><p class="humidity">50%
+
+                    </p>
+                    <p>Humidity</p>
+                </div>
+                </div>
+                <div class="col">
+                    <img src="/images/wind.png" alt="">
+                    <div><p class="wind">15km/hr
+
+                    </p>
+                    <p>Wind speed</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // const form = document.querySelector('.form')
+        // const input_wrapper = document.querySelector('.input-wrapper')
+        // const search_box = document.querySelector('.search-box');
+        // const temperature = document.querySelector('.temperature');
+
+        // form.addEventListener('submit', (e) =>{
+        //     e.preventDefault()
+        //     const searchbox_value = search_box.value.trim();
+        //     async function getData() {
+        //         try {
+        //             const url= 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/nigeria?unitGroup=us&key=E8B25ABHKHEWSVXBM9YAQWC9W&contentType=json'
+        //             const response = await fetch(url);
+        //             const data = await response.json();
+        //             console.log(data);
+        //         } 
+                
+        //         catch (error) {
+        //             console.error('Error:', error)
+        //         }
+                
+        //     }
+        //     getData();
+        //     // fetch('https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/london?key=E8B25ABHKHEWSVXBM9YAQWC9W')
+        //     // const response= 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/london?key=E8B25ABHKHEWSVXBM9YAQWC9W'
+        //     // const data = response.json();
+            
+        //     //     console.log(data.data);
+        // })
+        const apiKey = '239b186e3b077fde14672182b5bc87f1';
+        const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
+        const searchBox=document.querySelector('.search input')
+        const searchBtn=document.querySelector('.search button')
+        const weatherIcon = document.querySelector('.weather-icon')
+        async function checkWeather(city){
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+            if(response.status==404){
+                document.querySelector('.error').style.display = "block"
+                document.querySelector('.weather').style.display = "none";
+            }else {
+                 var data = await response.json();
+            document.querySelector('.city').innerHTML = data.name;
+            document.querySelector('.temp').innerHTML = Math.round(data.main.temp) + '&degc';
+            document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
+            document.querySelector('.wind').innerHTML = data.wind.speed + 'km/h';
+                
+            if(data.weather[0].main == "Clouds"){
+            weatherIcon.src = 'images/clouds.png';
+            }
+            else if(data.weather[0].main =="Clear"){
+                weatherIcon.src = 'images/clear.png';
+            }
+            else if(data.weather[0].main =="Rain"){
+                weatherIcon.src = 'images/rain.png';
+            }
+            else if(data.weather[0].main =="Drizzle"){
+                weatherIcon.src = 'images/drizzle.png';
+            }
+            else if(data.weather[0].main =="Mist"){
+                weatherIcon.src = 'images/mist.png';
+            }
+            document.querySelector('.weather').style.display = "block";
+        }}
+        searchBtn.addEventListener('click', ()=>{
+             checkWeather(searchBox.value);
+        })
+       
+    </script>
+</body>
+</html>
